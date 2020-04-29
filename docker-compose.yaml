@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  btcd:
+    image: tierion/btcd:latest
+    entrypoint: 'btcd --configfile=/root/.btcd/btcd.conf'
+    ports:
+      - target: 8332
+        published: 8332
+        protocol: tcp
+        mode: host
+      - target: 8333
+        published: 8333
+        protocol: tcp
+        mode: host
+      - target: 8334
+        published: 8334
+        protocol: tcp
+        mode: host
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 15
+        window: 90s
+      endpoint_mode: dnsrr
+    volumes:
+      - ~/.btcd/:/root/.btcd/:z
